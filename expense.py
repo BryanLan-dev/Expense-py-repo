@@ -5,7 +5,7 @@
 from datetime import datetime
 
 #inputs options for category of the expense
-ALLOWED_CATEGORIES = ALLOWED_CATEGORIES = (
+ALLOWED_CATEGORIES = (
     "food",
     "groceries",
     "rent",
