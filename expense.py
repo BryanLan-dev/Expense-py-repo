@@ -22,7 +22,12 @@ ALLOWED_CATEGORIES = (
 
 
 #defined the expense function
-def expense():
+Class Expense:
+    def __init__(self, name, amount, date, category):
+        self.name = name
+        self.amount = amount
+        self.date = date
+        self.category = category
 
 #validate the input to ensure amount is a positive number, date is in the correct format, and category is not empty
     while True:
