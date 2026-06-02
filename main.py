@@ -23,7 +23,7 @@ def main():
             manager.add_expense(exp)
             print('Expense added successfully!')
         elif choice == '2':
-            expenses = manager.get_expenses()
+            expenses = manager.load_expenses()
             if not expenses:
                 print('No expenses found.')
             else:
