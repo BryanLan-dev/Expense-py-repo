@@ -35,8 +35,11 @@ class StorageManager:
 # This method loads expenses from the JSON file and returns them as a list of expense objects
     def load_expenses(self):
         with open(self.filename, "r") as f:
-            data = json.load(f)
-            return [dict_to_expense(item) for item in data]
+            content = f.read().strip()
+            if not content:  # if file is empty, return empty list
+                return []
+        data = json.loads(content)
+        return [dict_to_expense(item) for item in data]
             
 
 # This method saves a list of expense objects to the JSON file by converting them to dictionaries
