@@ -77,6 +77,6 @@ def get_expense_input():
 
 # This only runs if you execute expense.py directly
 if __name__ == "__main__":
-    expense_data = expense()
-    print("Expense recorded:", expense_data)
+    expense_data = get_expense_input()
+    print(f"Expense recorded: {expense_data.name}, ${expense_data.amount}, {expense_data.date}, {expense_data.category}")
 

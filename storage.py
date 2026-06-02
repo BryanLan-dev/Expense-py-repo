@@ -1,4 +1,4 @@
-from expense import expense
+from expense import Expense
 import json
 import os
 
@@ -14,7 +14,7 @@ def expense_to_dict(expense):
 
 # This function converts a dictionary back to an expense object
 def dict_to_expense(data):
-    return expense(
+    return Expense(
         data["name"],
         data["amount"],
         data["date"],
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     manager = StorageManager("test_expenses.json")
 
     # 2. Create a dummy expense (ensure these match your class definition)
-    test_expense = expense("Coffee", 5.50, "Food")
+    test_expense = Expense("Coffee", 5.50, "2023-10-01", "Food")
 
     # 3. Add it and print the result
     manager.add_expense(test_expense)
