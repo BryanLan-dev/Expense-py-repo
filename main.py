@@ -4,7 +4,7 @@ from expense import expense
 
 def main():
 # Initialize the storage manager
-    mangager = StorageManager()
+    manager = StorageManager()
 
 # Main loop for the application
     while True:
@@ -20,10 +20,10 @@ def main():
             amount = float(input('Enter expense amount: '))
             date = input('Enter expense date (YYYY-MM-DD): ')
             exp = expense(description, amount, date)
-            mangager.add_expense(exp)
+            manager.add_expense(exp)
             print('Expense added successfully!')
         elif choice == '2':
-            expenses = mangager.get_expenses()
+            expenses = manager.get_expenses()
             if not expenses:
                 print('No expenses found.')
             else:
