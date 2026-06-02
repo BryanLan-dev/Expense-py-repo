@@ -22,7 +22,7 @@ ALLOWED_CATEGORIES = (
 
 
 #defined the expense function
-Class Expense:
+class Expense:
     def __init__(self, name, amount, date, category):
         self.name = name
         self.amount = amount
