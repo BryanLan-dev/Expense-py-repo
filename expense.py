@@ -66,14 +66,7 @@ def get_expense_input():
     return Expense(name, amount, date, category)
 
 
-    expense_data = {
-    "amount": amount,
-    "date": date,
-    "category": category,
-    "description": description,
-}
-
-    return expense_data
+   
 
 # This only runs if you execute expense.py directly
 if __name__ == "__main__":
