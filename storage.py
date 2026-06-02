@@ -17,7 +17,9 @@ def dict_to_expense(data):
     return expense(
         data["name"],
         data["amount"],
+        data["date"],
         data["category"]
+        
     )
 
 # This class manages the storage of expenses in a JSON file
