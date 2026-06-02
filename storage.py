@@ -8,6 +8,7 @@ def expense_to_dict(expense):
     return {
         "name": expense.name,
         "amount": expense.amount,
+        "date": expense.date,
         "category": expense.category
     }
 
