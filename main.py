@@ -1,8 +1,5 @@
-from datetime import date
-from unicodedata import category
-
 from storage import StorageManager
-from expense import expense
+from expense import Expense, get_expense_input
 
 
 def main():
@@ -19,7 +16,7 @@ def main():
 # Get user choice
         choice = input('Enter your choice: ')
         if choice == '1':
-            exp = Expense(description, amount, date, category)
+            exp = get_expense_input()
             manager.add_expense(exp)
             print('Expense added successfully!')
         elif choice == '2':
@@ -28,7 +25,8 @@ def main():
                 print('No expenses found.')
             else:
                 for exp in expenses:
-                    print(f'{exp.date}: {exp.description} - ${exp.amount:.2f}')
+                    print(f'{exp.date}: {exp.name} - ${exp.amount:.2f}')
+
         elif choice == '3':
             print('Exiting the application. Goodbye!')
             break
