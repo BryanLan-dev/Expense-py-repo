@@ -1,3 +1,6 @@
+from datetime import date
+from unicodedata import category
+
 from storage import StorageManager
 from expense import expense
 
@@ -16,10 +19,7 @@ def main():
 # Get user choice
         choice = input('Enter your choice: ')
         if choice == '1':
-            description = input('Enter expense description: ')
-            amount = float(input('Enter expense amount: '))
-            date = input('Enter expense date (YYYY-MM-DD): ')
-            exp = expense(description, amount, date)
+            exp = Expense(description, amount, date, category)
             manager.add_expense(exp)
             print('Expense added successfully!')
         elif choice == '2':
