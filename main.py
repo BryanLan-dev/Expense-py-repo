@@ -42,8 +42,7 @@ def main():
                     print(f'{idx + 1}. {exp.date}: {exp.name} - ${exp.amount:.2f}')
                 try:
                     del_idx = int(input('Enter the number of the expense to delete: ')) - 1
-                    if 0 <= del_idx < len(expenses):
-                        manager.delete_expense(del_idx)
+                    if manager.delete_expense(del_idx):
                         print('Expense deleted successfully!')
                     else:
                         print('Invalid index. Please try again.')
