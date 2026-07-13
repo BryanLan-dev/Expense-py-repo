@@ -1,5 +1,4 @@
 from operator import index
-
 from expense import Expense
 import json
 import os
@@ -55,15 +54,18 @@ class StorageManager:
         expenses.append(expense)
         self.save_expenses(expenses)
 
-# This method deletes an expense by index and saves the updated list to the JSON file
-    def delete_expense(self, index):
+# This method deletes an expense by name/date and saves the updated list to the JSON file
+    def delete_expense(self, name, date):
         expenses = self.load_expenses()
-        if 0 <= index < len(expenses):
-            expenses.pop(index)
-            self.save_expenses(expenses)
-            return True
-        return False
-
+        original_count = len(expenses)
+        expenses = [expense for expense in expenses if not (expense.name == name and expense.date == date)]
+        
+        if len(expenses) == original_count:
+            return False  # No expense was deleted
+        
+        self.save_expenses(expenses)
+        return True  # Return the updated list for confirmation
+        
 
 # This block is for testing the StorageManager functionality        
 if __name__ == "__main__":

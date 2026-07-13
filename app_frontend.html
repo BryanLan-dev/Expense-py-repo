@@ -533,6 +533,8 @@
     education:     { emoji:'📚', bg:'#e3f2fd', border:'#90caf9', text:'#0d47a1', bar:'#42a5f5' },
   };
 
+  const API_URL = 'http://127.0.0.1:5000/api/expenses';
+
   let expenses = [];
 
   document.getElementById('inp-date').valueAsDate = new Date();
@@ -605,7 +607,22 @@
     }).join('');
   }
 
-  function addExpense() {
+  // Fetches the current expense list from the Flask API and re-renders the page.
+  // This replaces the old approach of just reading the local `expenses` array,
+  // since the array no longer holds the "real" data — the server/data.json does.
+  async function loadExpenses() {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      expenses = data.expenses;
+      render();
+    } catch (err) {
+      console.error('Failed to load expenses:', err);
+      showToast('⚠️ Could not reach server');
+    }
+  }
+
+  async function addExpense() {
     const name = document.getElementById('inp-name').value.trim();
     const amount = parseFloat(document.getElementById('inp-amount').value);
     const date = document.getElementById('inp-date').value;
@@ -616,20 +633,55 @@
     if (!date) return showToast('📅 Pick a date');
     if (!category) return showToast('🏷️ Pick a category');
 
-    expenses.push({ name, amount, date, category });
-    render();
-    showToast('✅ Expense added!');
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, amount, date, category })
+      });
 
-    document.getElementById('inp-name').value = '';
-    document.getElementById('inp-amount').value = '';
-    document.getElementById('inp-category').value = '';
-    document.getElementById('inp-date').valueAsDate = new Date();
+      if (!response.ok) {
+        // response.ok is false for any 4xx/5xx status — e.g. your 400 validation errors
+        const errorData = await response.json();
+        return showToast('❌ ' + (errorData.message || 'Failed to add expense'));
+      }
+
+      showToast('✅ Expense added!');
+
+      document.getElementById('inp-name').value = '';
+      document.getElementById('inp-amount').value = '';
+      document.getElementById('inp-category').value = '';
+      document.getElementById('inp-date').valueAsDate = new Date();
+
+      // Re-fetch the full list from the server so it reflects what's actually saved,
+      // instead of guessing what the new state looks like on the frontend.
+      await loadExpenses();
+    } catch (err) {
+      console.error('Failed to add expense:', err);
+      showToast('⚠️ Could not reach server');
+    }
   }
 
-  function deleteExpense(name, date) {
-    expenses = expenses.filter(e => !(e.name === name && e.date === date));
-    render();
-    showToast('🗑️ Entry removed');
+  async function deleteExpense(name, date) {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, date })
+      });
+
+      if (!response.ok) {
+        // Covers your 404 "not found" case and any 400s
+        const errorData = await response.json();
+        return showToast('❌ ' + (errorData.message || 'Failed to delete expense'));
+      }
+
+      showToast('🗑️ Entry removed');
+      await loadExpenses();
+    } catch (err) {
+      console.error('Failed to delete expense:', err);
+      showToast('⚠️ Could not reach server');
+    }
   }
 
   function showToast(msg) {
@@ -639,7 +691,7 @@
     setTimeout(() => t.classList.remove('show'), 2200);
   }
 
-  render();
+  loadExpenses();
 </script>
 </body>
 </html>

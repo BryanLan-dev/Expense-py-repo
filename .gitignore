@@ -1,0 +1,6 @@
+data.json
+__pycache__/
+*.pyc
+.vscode/
+test_expense.json
+test_bad_expense.json
